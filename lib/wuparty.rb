@@ -282,6 +282,9 @@ class WuParty
     #   - limiting:
     #   entries(:limit => 5)
     #
+    #   - system fields:
+    #   entries(:system => true)
+    #
     # See http://wufoo.com/docs/api/v3/entries/get/#filter for details
     def entries(options={})
       query = {}
@@ -302,6 +305,10 @@ class WuParty
         field, direction = options[:sort].split(' ')
         query[:sort] = field
         query[:sortDirection] = direction || 'ASC'
+      end
+
+      if options[:system]
+        query[:system] = true
       end
 
       @party.get("forms/#{@id}/entries", :query => query)['Entries']
